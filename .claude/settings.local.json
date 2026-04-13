@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(conda env:*)",
+      "Bash(conda run:*)",
+      "WebSearch",
+      "WebFetch(domain:support.10xgenomics.com)",
+      "Bash(curl -sI \"https://cf.10xgenomics.com/samples/cell-exp/1.1.0/fresh_68k_pbmc_donor_a/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices_h5.h5\")",
+      "Bash(curl -sI -A 'Mozilla/5.0 \\(X11; Linux x86_64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36' https://cf.10xgenomics.com/samples/cell-exp/1.1.0/fresh_68k_pbmc_donor_a/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices_h5.h5)",
+      "Bash(curl -s \"https://api.figshare.com/v2/articles/5765138/files\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s \"https://api.figshare.com/v2/articles/5765138\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")",
+      "Bash(curl -s \"https://api.figshare.com/v2/articles?search_for=pbmc68k&page_size=5\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(a.get\\('id'\\), a.get\\('title'\\), a.get\\('url'\\)\\) for a in d]\")",
+      "Bash(curl -sIL \"https://zenodo.org/record/3894954/files/pbmc_10k_v3.h5ad\")",
+      "Bash(curl -s \"https://zenodo.org/api/records?q=pbmc68k+h5ad&size=5\")",
+      "Bash(python3 -c ':*)",
+      "Bash(curl -s \"https://zenodo.org/api/records?q=scib+pbmc+benchmark&size=5\")",
+      "Bash(curl -sI https://zenodo.org/api/records/__TRACKED_VAR__)",
+      "Bash(curl -sL \"https://zenodo.org/api/records/5765138\")",
+      "Bash(curl -sIL \"https://ndownloader.figshare.com/articles/5765138/versions/1\")",
+      "Bash(curl -sI \"https://ftp.ncbi.nlm.nih.gov/geo/series/GSE96nnn/GSE96583/suppl/GSE96583_RAW.tar\")",
+      "Bash(curl -s \"https://ftp.ncbi.nlm.nih.gov/geo/series/GSE132nnn/GSE132044/suppl/\")",
+      "Bash(curl -s \"https://ftp.ncbi.nlm.nih.gov/geo/series/GSE132nnn/GSE132044/suppl/GSE132044_pbmc_hg38_cell.tsv.gz\")",
+      "Bash(gunzip)",
+      "Bash(curl -s \"https://ftp.ncbi.nlm.nih.gov/geo/series/GSE132nnn/GSE132044/suppl/GSE132044_pbmc_hg38_gene.tsv.gz\")",
+      "Bash(ls results/*.done)"
+    ]
+  }
+}

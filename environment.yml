@@ -1,0 +1,30 @@
+name: scrna-bench
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scipy
+  - scikit-learn
+  - leidenalg
+  - python-igraph
+  - umap-learn
+  - jupyter
+  - ipykernel
+  - r-base=4.3
+  - r-seurat
+  - rpy2
+  - pip:
+    - scanpy
+    - anndata
+    - bbknn
+    - harmonypy
+    - scib-metrics
+    - anndata2ri
+    - session-info
