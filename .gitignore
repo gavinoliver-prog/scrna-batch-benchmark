@@ -1,0 +1,7 @@
+data/
+results/corrected/
+results/*.done
+results/*.skipped
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
