@@ -1,7 +1,11 @@
 """
 02c_integrate_seurat_wrap.py
-Python wrapper: calls 02c_integrate_seurat.R via subprocess,
-then reads the output PCA embedding and builds a standardized AnnData.
+Python wrapper: exports raw count matrices as MTX, calls 02c_integrate_seurat.R
+via subprocess, then reads the output PCA embedding and builds a standardised AnnData.
+
+Note: SeuratDisk is incompatible with Seurat v5 (removed slot= API). We export
+raw counts as Matrix Market files instead; R reads them with Matrix::readMM().
+
 Fails gracefully if R is not available.
 Output: results/corrected/seurat.h5ad
 """
@@ -9,8 +13,8 @@ Output: results/corrected/seurat.h5ad
 import subprocess
 import sys
 import shutil
+import scipy.io
 import scanpy as sc
-import anndata as ad
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -27,6 +31,8 @@ RSCRIPT  = ROOT / "scripts" / "02c_integrate_seurat.R"
 TMP_DIR  = ROOT / "results" / "corrected" / "_seurat_tmp"
 TMP_DIR.mkdir(parents=True, exist_ok=True)
 
+MTX_3K  = TMP_DIR / "pbmc3k_mtx"
+MTX_68K = TMP_DIR / "pbmc68k_mtx"
 PCA_CSV  = TMP_DIR / "seurat_pca.csv"
 META_CSV = TMP_DIR / "seurat_meta.csv"
 
@@ -38,11 +44,30 @@ if shutil.which("Rscript") is None:
     SKIP_MARKER.touch()
     sys.exit(0)
 
+
+def write_mtx(adata, out_dir: Path) -> None:
+    """Write AnnData.X as Matrix Market (genes × cells) + barcodes + features."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    # MTX convention: rows = genes, cols = cells
+    scipy.io.mmwrite(str(out_dir / "matrix.mtx"), adata.X.T.tocsc())
+    pd.Series(adata.obs_names).to_csv(out_dir / "barcodes.tsv", index=False, header=False)
+    pd.Series(adata.var_names).to_csv(out_dir / "features.tsv", index=False, header=False)
+
+
+# Export raw count matrices for each batch
+print("  Exporting raw counts to MTX...")
+adata_3k  = sc.read_h5ad(RAW_DIR / "pbmc3k_raw.h5ad")
+adata_68k = sc.read_h5ad(RAW_DIR / "pbmc68k_raw.h5ad")
+write_mtx(adata_3k,  MTX_3K)
+write_mtx(adata_68k, MTX_68K)
+print(f"    pbmc3k:  {adata_3k.shape}  -> {MTX_3K}")
+print(f"    pbmc68k: {adata_68k.shape} -> {MTX_68K}")
+
 # Call R script
 cmd = [
     "Rscript", str(RSCRIPT),
-    str(RAW_DIR / "pbmc3k_raw.h5ad"),
-    str(RAW_DIR / "pbmc68k_raw.h5ad"),
+    str(MTX_3K),
+    str(MTX_68K),
     str(PCA_CSV),
     str(META_CSV),
 ]

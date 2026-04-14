@@ -39,6 +39,7 @@ run_step "01 Preprocessing"         "01_preprocess.py"             "$RESULTS_DIR
 run_step "02a BBKNN"                "02a_integrate_bbknn.py"       "$RESULTS_DIR/02a_bbknn.done"
 run_step "02b Harmony"              "02b_integrate_harmony.py"     "$RESULTS_DIR/02b_harmony.done"
 run_step "02c Seurat CCA"           "02c_integrate_seurat_wrap.py" "$RESULTS_DIR/02c_seurat.done"
+run_step "02d Scanorama"            "02d_integrate_scanorama.py"   "$RESULTS_DIR/02d_scanorama.done"
 run_step "03 Benchmarking (scIB)"   "03_benchmark.py"              "$RESULTS_DIR/03_benchmark.done"
 run_step "04 Visualization"         "04_visualize.py"              "$RESULTS_DIR/04_visualize.done"
 
